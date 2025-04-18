@@ -60,14 +60,25 @@ const Dashboard = () => {
     try {
       const updatedBranch = await mockUpdateBranchRate(branchData.branch.id, { rate });
       
-      // Update our local state
-      setBranchData(prev => prev ? {
-        ...prev,
-        branch: {
-          ...prev.branch,
-          rate: updatedBranch.rate
-        }
-      } : null);
+      // Update our local state to reflect the cascading changes
+      setBranchData(prev => {
+        if (!prev) return null;
+        
+        // Create a deep copy to avoid mutating the original state
+        const updatedChildren = prev.children.map(child => ({
+          ...child,
+          rate: rate // Apply the new rate to all children
+        }));
+        
+        return {
+          ...prev,
+          branch: {
+            ...prev.branch,
+            rate: updatedBranch.rate
+          },
+          children: updatedChildren
+        };
+      });
       
       toast({
         title: "Rate Updated",

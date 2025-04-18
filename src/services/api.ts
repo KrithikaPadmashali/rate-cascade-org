@@ -1,4 +1,3 @@
-
 import { Account, AuthResponse, Branch, BranchWithChildrenAndAccounts, LoginRequest, RateUpdateRequest, User } from "@/models/types";
 
 // This would be your API base URL in a real application
@@ -210,6 +209,10 @@ export const mockGetBranchDetails = (branchId: number): Promise<BranchWithChildr
 export const mockUpdateBranchRate = (branchId: number, rateRequest: RateUpdateRequest): Promise<Branch> => {
   return new Promise((resolve) => {
     setTimeout(() => {
+      // Update the mock data to simulate cascading rate updates
+      // In a real app, the backend would handle this
+      mockCascadeRateUpdates(branchId, rateRequest.rate);
+      
       resolve({
         id: branchId,
         name: `Branch ${branchId}`,
@@ -222,4 +225,36 @@ export const mockUpdateBranchRate = (branchId: number, rateRequest: RateUpdateRe
       });
     }, 500);
   });
+};
+
+// Helper function to simulate cascading rate updates in our mock data system
+const mockCascadeRateUpdates = (branchId: number, newRate: number) => {
+  // This is a simplified version for the mock data
+  // In a real application, this would be handled by the backend
+  
+  // Update the specified branch and its children in our mock data system
+  const updateBranchAndChildren = (data: BranchWithChildrenAndAccounts, newRate: number) => {
+    // Update the branch rate
+    data.branch.rate = newRate;
+    
+    // Update all accounts under this branch
+    if (data.accounts) {
+      data.accounts.forEach(account => {
+        account.rate = newRate;
+      });
+    }
+    
+    // Update all child branches
+    if (data.children) {
+      data.children.forEach(child => {
+        child.rate = newRate;
+      });
+    }
+    
+    return data;
+  };
+  
+  // We're simulating this for our mock API
+  // When the real API is implemented, this would be handled server-side
+  return updateBranchAndChildren;
 };

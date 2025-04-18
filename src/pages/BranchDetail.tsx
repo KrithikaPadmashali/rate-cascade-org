@@ -71,14 +71,31 @@ const BranchDetail = () => {
     try {
       const updatedBranch = await mockUpdateBranchRate(branchData.branch.id, { rate });
       
-      // Update our local state
-      setBranchData(prev => prev ? {
-        ...prev,
-        branch: {
-          ...prev.branch,
-          rate: updatedBranch.rate
-        }
-      } : null);
+      // Update our local state to reflect the cascading changes
+      setBranchData(prev => {
+        if (!prev) return null;
+        
+        // Create updated copies of children and accounts with the new rate
+        const updatedChildren = prev.children.map(child => ({
+          ...child,
+          rate: rate
+        }));
+        
+        const updatedAccounts = prev.accounts.map(account => ({
+          ...account,
+          rate: rate
+        }));
+        
+        return {
+          ...prev,
+          branch: {
+            ...prev.branch,
+            rate: updatedBranch.rate
+          },
+          children: updatedChildren,
+          accounts: updatedAccounts
+        };
+      });
       
       toast({
         title: "Rate Updated",
