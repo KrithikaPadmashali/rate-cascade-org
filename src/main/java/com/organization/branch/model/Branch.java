@@ -51,4 +51,3 @@ public class Branch {
         updatedAt = LocalDateTime.now();
     }
 }
-

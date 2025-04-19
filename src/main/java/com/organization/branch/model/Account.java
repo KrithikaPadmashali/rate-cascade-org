@@ -44,4 +44,3 @@ public class Account {
         updatedAt = LocalDateTime.now();
     }
 }
-

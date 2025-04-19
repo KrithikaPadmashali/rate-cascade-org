@@ -10,4 +10,3 @@ public class BranchApplication {
         SpringApplication.run(BranchApplication.class, args);
     }
 }
-

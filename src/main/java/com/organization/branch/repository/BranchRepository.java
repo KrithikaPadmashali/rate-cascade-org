@@ -14,4 +14,3 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
     @Query("SELECT b FROM Branch b WHERE b.parent.id = :branchId")
     List<Branch> findAllChildBranches(@Param("branchId") Long branchId);
 }
-

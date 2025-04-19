@@ -51,4 +51,3 @@ public class BranchService {
         childBranches.forEach(childBranch -> updateRateCascading(childBranch, newRate));
     }
 }
-

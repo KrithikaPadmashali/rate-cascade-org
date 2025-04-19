@@ -5,4 +5,3 @@ public enum UserRole {
     ADMIN,
     BRANCH_MANAGER
 }
-

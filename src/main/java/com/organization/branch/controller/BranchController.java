@@ -37,4 +37,3 @@ public class BranchController {
         return ResponseEntity.ok(updatedBranch);
     }
 }
-
