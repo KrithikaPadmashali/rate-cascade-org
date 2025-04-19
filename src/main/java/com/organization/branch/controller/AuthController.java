@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
 
@@ -23,15 +23,17 @@ public class AuthController {
         String username = credentials.get("username");
         String password = credentials.get("password");
 
-        if (userService.validateCredentials(username, password)) {
-            User user = userService.findByUsername(username);
-            Map<String, Object> response = new HashMap<>();
-            response.put("token", "mock-jwt-token"); // In a real app, generate a JWT token
-            response.put("user", user);
-            return ResponseEntity.ok(response);
+        try {
+            if (userService.validateCredentials(username, password)) {
+                User user = userService.findByUsername(username);
+                Map<String, Object> response = new HashMap<>();
+                response.put("token", "mock-jwt-token"); // In a real app, generate a JWT token
+                response.put("user", user);
+                return ResponseEntity.ok(response);
+            }
+            return ResponseEntity.badRequest().body("Invalid credentials");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-        return ResponseEntity.badRequest().body("Invalid credentials");
     }
 }
-
